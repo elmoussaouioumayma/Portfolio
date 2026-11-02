@@ -27,6 +27,7 @@
         <ul class="nav-links">
           <li><a href="#about">About</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#demo">Live demo</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#education">Education</a></li>
           <li><a href="#contact">Contact</a></li>
@@ -49,7 +50,7 @@
         <p class="lede">Two master's degrees, one in Machine Learning &amp; Data Analytics, one in Energy Engineering, plus hands-on time in cement, mining and manufacturing plants. Today I build image-analysis software for electrochemical coatings at Hochschule Aalen.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#projects">See projects</a>
-          <a class="btn btn-ghost" href="mailto:oma98yma@gmail.com">Get in touch</a>
+          <a class="btn btn-ghost" href="#demo">Try the live demo</a>
         </div>
         <dl class="stats">
           <div><dt>Chamfer distance</dt><dd>&lt; 0.08 <span>µm</span></dd></div>
@@ -174,10 +175,74 @@
       </div>
     </section>
 
+
+    <!-- LIVE DEMO -->
+    <section class="section" id="demo">
+      <div class="wrap">
+        <p class="kicker">03 · Live demo</p>
+        <h2>Crack analysis, running in your browser</h2>
+        <p class="lede demo-lede">A simplified version of my thesis pipeline: black top-hat, Otsu threshold, small-object removal, skeletonization, then measurement. Move the sliders and watch it re-run. Synthetic samples come with a known ground-truth mask, so detection F1 is computed live. You can also upload your own image; nothing leaves your device.</p>
+
+        <div class="cd" id="crackDemo">
+          <div class="cd-stage">
+            <div class="cd-toolbar">
+              <div class="cd-views" role="group" aria-label="View">
+                <button type="button" data-view="overlay" aria-pressed="true">Overlay</button>
+                <button type="button" data-view="original" aria-pressed="false">Original</button>
+                <button type="button" data-view="tophat" aria-pressed="false">Top-hat</button>
+                <button type="button" data-view="mask" aria-pressed="false">Mask</button>
+              </div>
+              <span class="cd-time" id="cdTime"></span>
+            </div>
+            <canvas id="cdCanvas" width="480" height="320" aria-label="Crack detection result"></canvas>
+            <div class="cd-legend"><span class="lg lg-mask"></span>detected crack <span class="lg lg-skel"></span>skeleton <span class="lg lg-junc"></span>junction</div>
+            <p class="cd-source" id="cdSource">Loading…</p>
+          </div>
+
+          <div class="cd-panel">
+            <div class="cd-actions">
+              <button type="button" class="btn btn-primary btn-sm" id="cdNew">New sample</button>
+              <label class="btn btn-ghost btn-sm cd-upload">Upload image<input type="file" id="cdFile" accept="image/*"></label>
+            </div>
+
+            <div class="cd-ctl">
+              <label for="cdKernel">Top-hat kernel <output id="cdKernelOut"></output></label>
+              <input type="range" id="cdKernel" min="3" max="31" step="2" value="11">
+            </div>
+            <div class="cd-ctl">
+              <label for="cdThr">Threshold <output id="cdThrOut"></output></label>
+              <input type="range" id="cdThr" min="1" max="120" value="30">
+              <label class="cd-check"><input type="checkbox" id="cdAuto" checked> Auto (Otsu)</label>
+            </div>
+            <div class="cd-ctl">
+              <label for="cdMin">Remove objects smaller than <output id="cdMinOut"></output></label>
+              <input type="range" id="cdMin" min="0" max="300" step="5" value="60">
+            </div>
+            <div class="cd-row">
+              <label class="cd-check"><input type="checkbox" id="cdDark" checked> Cracks are darker than background</label>
+            </div>
+            <div class="cd-row">
+              <label for="cdScale" class="cd-scale">Scale <input type="number" id="cdScale" value="0.25" min="0.001" step="0.01" inputmode="decimal"> µm/px</label>
+            </div>
+
+            <dl class="cd-metrics">
+              <div><dt>Crack length</dt><dd id="mLen">–</dd></div>
+              <div><dt>Crack density</dt><dd id="mDens">–</dd></div>
+              <div><dt>Junctions</dt><dd id="mJunc">–</dd></div>
+              <div><dt>Endpoints</dt><dd id="mEnds">–</dd></div>
+              <div><dt>Area fraction</dt><dd id="mArea">–</dd></div>
+              <div class="f1"><dt>F1 vs ground truth</dt><dd id="mF1">–</dd><small id="mF1Sub"></small></div>
+            </dl>
+          </div>
+        </div>
+        <p class="cd-note">Density uses the line-intercept method (crossings per cm of test line). The scale is a placeholder; enter your microscope's calibration. Full tools: <a href="https://github.com/elmoussaouioumayma/interactive-crack-detection" target="_blank" rel="noopener">interactive-crack-detection</a> · <a href="https://github.com/elmoussaouioumayma/crack-depth-explorer" target="_blank" rel="noopener">crack-depth-explorer</a></p>
+      </div>
+    </section>
+
     <!-- EXPERIENCE -->
     <section class="section" id="experience">
       <div class="wrap">
-        <p class="kicker">03 · Experience</p>
+        <p class="kicker">04 · Experience</p>
         <h2>Where I've worked</h2>
         <ol class="timeline">
           <li>
@@ -224,7 +289,7 @@
     <!-- EDUCATION -->
     <section class="section alt" id="education">
       <div class="wrap">
-        <p class="kicker">04 · Education</p>
+        <p class="kicker">05 · Education</p>
         <h2>Education &amp; certificates</h2>
         <div class="edu">
           <div class="edu-item">
@@ -278,7 +343,7 @@
     <!-- CONTACT -->
     <section class="section contact" id="contact">
       <div class="wrap">
-        <p class="kicker">05 · Contact</p>
+        <p class="kicker">06 · Contact</p>
         <h2>Let's talk about your data.</h2>
         <p class="lede">I'm open to data science roles working with image, measurement or process data, especially where results need to hold up in front of engineers.</p>
         <ul class="contact-links">
@@ -295,5 +360,6 @@
   </footer>
 
   <script src="assets/main.js"></script>
+  <script src="assets/crack-demo.js"></script>
 </body>
 </html>

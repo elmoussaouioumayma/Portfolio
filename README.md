@@ -7,6 +7,7 @@ Plain HTML/CSS/JS, no build step.
 - `index.html`: page content
 - `assets/style.css`: styles (light/dark theme)
 - `assets/main.js`: theme toggle, animated crack-network background, scroll effects
+- `assets/crack-demo.js`: live in-browser crack-analysis demo (top-hat, Otsu, skeletonization, measurements, F1 vs ground truth)
 
 ## Run locally
 
