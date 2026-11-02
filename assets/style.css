@@ -263,3 +263,5 @@ p { margin: 0 0 1rem; }
 .cd-metrics .f1 dd { color: var(--accent); }
 .cd-metrics small { font: .72rem var(--mono); color: var(--muted); }
 .cd-note { font-size: .84rem; color: var(--muted); margin-top: 14px; }
+.repo-private { margin: 0 !important; font: 500 .8rem var(--mono); color: var(--muted) !important; }
+.repo-row { margin: 0 0 4px; }
