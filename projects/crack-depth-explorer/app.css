@@ -95,3 +95,4 @@ code { font: .86em var(--mono); background: var(--bg-alt); border: 1px solid var
 .pj-fields label { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px; font-size: .86rem; color: var(--ink-soft); }
 .pj-fields input { width: 84px; padding: 5px 8px; font: .84rem var(--mono); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; }
 .pj-form .cd-actions { margin: 0; }
+.pj-cta { margin: 0 0 1.4rem; }
