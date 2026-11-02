@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crack Depth Explorer · Oumayma El Moussaoui</title>
+  <meta name="description" content="Live demo: measure cracks in 3D (depth, width, length in millimetres) from four photos with photometric stereo. Runs entirely in your browser.">
+  <meta property="og:title" content="Crack Depth Explorer: 3D crack measurement from four photos">
+  <meta property="og:description" content="Photometric stereo in the browser: 0.21 mm mean depth error on surfaces with known depth.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5f5c'/%3E%3Cpath d='M6 9 L13 15 L11 23 M13 15 L20 13 L26 19 M20 13 L22 6' stroke='%23f4efe6' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="../../" aria-label="Back to portfolio">
+        <span class="brand-mark" aria-hidden="true">OE</span>
+        <span>Oumayma El Moussaoui</span>
+      </a>
+      <nav aria-label="Page">
+        <ul class="nav-links">
+          <li><a href="#live">Live demo</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#validation">Validation</a></li>
+          <li><a href="#own">Your photos</a></li>
+          <li><a href="../../#projects">← All projects</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="pj-hero">
+      <div class="wrap">
+        <p class="eyebrow">Project · Computer vision · Photometric stereo</p>
+        <h1>Crack Depth Explorer</h1>
+        <p class="lede">Measure cracks in 3D (depth, width and length in millimetres) from <strong>four ordinary photos</strong>. The camera stays still and only the light moves; the surface is reconstructed with photometric stereo, then every crack is found and measured. Built for concrete, stone, plaster and asphalt.</p>
+        <dl class="stats pj-stats">
+          <div><dt>Mean depth error</dt><dd>0.21 <span>mm</span></dd></div>
+          <div><dt>vs. single photo</dt><dd>2.6× <span>more accurate</span></dd></div>
+          <div><dt>Detection P / R</dt><dd>0.96 <span>/ 0.97</span></dd></div>
+        </dl>
+        <ul class="chips"><li>Python</li><li>NumPy / SciPy</li><li>OpenCV</li><li>scikit-image</li><li>photometric stereo</li><li>Poisson integration</li></ul>
+      </div>
+    </section>
+
+    <!-- LIVE -->
+    <section class="section pj-live" id="live">
+      <div class="wrap">
+        <p class="kicker">Live demo</p>
+        <h2>The full pipeline, running in your browser</h2>
+        <p class="pj-intro">The four photos below are a rendered concrete surface whose true 3D shape is known, so the page can score its own result. Turn a light off, change the assumed light angle, or click two points on the image to measure a cross-section.</p>
+
+        <div class="pj-photos" id="photos" aria-label="Input photos">
+          <!-- filled by app.js -->
+        </div>
+
+        <div class="pj-ctrls">
+          <div class="cd-ctl">
+            <label for="elev">Assumed light elevation <output id="elevOut">45°</output></label>
+            <input type="range" id="elev" min="30" max="60" step="1" value="45">
+            <small id="elevHint">The photos were lit at 45°. Try 40° or 50° to see how sensitive depth is to this.</small>
+          </div>
+          <div class="cd-ctl">
+            <label for="seed">Crack seed depth <output id="seedOut">0.40 mm</output></label>
+            <input type="range" id="seed" min="0.2" max="1.0" step="0.05" value="0.4">
+          </div>
+          <div class="cd-ctl">
+            <label for="edge">Crack edge depth <output id="edgeOut">0.15 mm</output></label>
+            <input type="range" id="edge" min="0.05" max="0.35" step="0.01" value="0.15">
+          </div>
+        </div>
+
+        <div class="pj-grid">
+          <div class="pj-viewer">
+            <div class="cd-toolbar">
+              <div class="cd-views" role="group" aria-label="View">
+                <button type="button" data-view="depth" aria-pressed="true">Crack depth</button>
+                <button type="button" data-view="height" aria-pressed="false">Height</button>
+                <button type="button" data-view="albedo" aria-pressed="false">Albedo</button>
+                <button type="button" data-view="single" aria-pressed="false">One photo</button>
+                <button type="button" data-view="photo" aria-pressed="false">Photo</button>
+              </div>
+              <span class="cd-time" id="timing"></span>
+            </div>
+            <div class="pj-canvas-wrap">
+              <canvas id="view" width="640" height="480" aria-label="Analysis result. Click two points to draw a cross-section."></canvas>
+              <div class="pj-busy" id="busy" hidden><span></span>Reconstructing surface…</div>
+            </div>
+            <div class="pj-legend" id="legend"></div>
+            <p class="pj-hint">Click two points on the image to draw a cross-section.</p>
+          </div>
+
+          <aside class="pj-side">
+            <dl class="cd-metrics" id="summary">
+              <div><dt>Crack segments</dt><dd id="sSeg">–</dd></div>
+              <div><dt>Total length</dt><dd id="sLen">–</dd></div>
+              <div><dt>Max depth</dt><dd id="sMaxD">–</dd></div>
+              <div><dt>Median depth</dt><dd id="sMedD">–</dd></div>
+              <div><dt>Median width</dt><dd id="sMedW">–</dd></div>
+              <div><dt>Crack area</dt><dd id="sArea">–</dd></div>
+            </dl>
+
+            <div class="pj-acc" id="accuracy">
+              <h3>Accuracy vs. ground truth <span id="accPts"></span></h3>
+              <table>
+                <thead><tr><th></th><th>4 photos</th><th>1 photo*</th></tr></thead>
+                <tbody>
+                  <tr><th>Depth MAE</th><td id="aPsMae">–</td><td id="aOneMae">–</td></tr>
+                  <tr><th>Median error</th><td id="aPsMed">–</td><td id="aOneMed">–</td></tr>
+                  <tr><th>Correlation</th><td id="aPsCor">–</td><td id="aOneCor">–</td></tr>
+                </tbody>
+              </table>
+              <p class="pj-foot">*"darker = deeper" from one photo (the average of the four), given its best-fit scale from the truth. Photometric stereo gets no help from the truth.</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="pj-grid pj-grid-2">
+          <div class="pj-card">
+            <div class="pj-card-head">
+              <h3>Cross-section</h3>
+              <span class="pj-readout" id="profRead"></span>
+            </div>
+            <canvas id="profile" width="640" height="260" aria-label="Height profile along the selected line"></canvas>
+            <div class="pj-legend"><span class="lg-line"></span>measured height <span class="lg-line lg-dash"></span>true surface <span class="lg-box"></span>width at half depth</div>
+          </div>
+          <div class="pj-card">
+            <div class="pj-card-head">
+              <h3>3D surface</h3>
+              <label class="pj-inline">height ×<input type="range" id="exag" min="1" max="12" step="1" value="4"><output id="exagOut">4</output></label>
+            </div>
+            <div id="three" class="pj-three" aria-label="Interactive 3D view of the reconstructed surface. Drag to rotate, scroll to zoom."></div>
+            <p class="pj-hint">Drag to rotate · scroll or pinch to zoom.</p>
+          </div>
+        </div>
+
+        <div class="pj-card pj-table-card">
+          <h3>Crack segments <small>(longest first; numbers match the image)</small></h3>
+          <div class="pj-table-wrap">
+            <table class="pj-table" id="segTable">
+              <thead><tr><th>#</th><th>Length</th><th>Mean depth</th><th>Max depth</th><th>Mean width</th><th>Max width</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <section class="section alt" id="how">
+      <div class="wrap">
+        <p class="kicker">How it works</p>
+        <h2>From four photos to millimetres</h2>
+        <p class="pj-intro">In one photo a crack is darker than its surroundings, but brightness also depends on the material's colour, dirt, shadows and crack width; a single image holds no height information. With three or more photos lit from known directions, the surface <em>orientation</em> and the surface <em>colour</em> of every pixel can be solved separately.</p>
+        <ol class="pj-steps">
+          <li><span>Linearise</span>Phone JPEGs are sRGB-encoded; convert back to linear brightness.</li>
+          <li><span>Normals + albedo</span>Per pixel, least squares for <code>I = L · (albedo · n)</code>. The darkest observation is dropped when it looks like a cast shadow; the other three still fix the normal.</li>
+          <li><span>Height map</span>Normals give slopes; the Poisson equation is solved with a discrete cosine transform (Simchony et al. 1990), then the tilt is removed.</li>
+          <li><span>Crack depth</span><code>closing(height) − height</code>: the black-hat transform on heights gives depth below the local surface.</li>
+          <li><span>Crack mask</span>Hysteresis on depth (≥ 0.4 mm somewhere, continues while ≥ 0.15 mm); a shape filter removes round air voids.</li>
+          <li><span>Measure</span>Skeleton split at junctions into segments: length, depth, and width at half depth (the chipped top edge is not well defined).</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- VALIDATION -->
+    <section class="section" id="validation">
+      <div class="wrap">
+        <p class="kicker">Validation</p>
+        <h2>Tested against surfaces with known depth</h2>
+        <p class="pj-intro">A renderer creates cracked concrete with a known 3D shape (roughness, air voids, mottled colour, branching cracks of varying depth and width), lit from four sides with cast shadows, sensor noise and sRGB gamma. The pipeline was run on <strong>20 unseen scenes</strong> and compared at <strong>41,299 crack centre-line points</strong> (true depth 0.3–4.0 mm).</p>
+        <div class="pj-table-wrap">
+          <table class="pj-table pj-val">
+            <thead><tr><th></th><th>Photometric stereo (4 photos)</th><th>One photo, "darker = deeper" (best-case scale)</th></tr></thead>
+            <tbody>
+              <tr><th>Depth: mean abs. error</th><td><strong>0.21 mm</strong></td><td>0.55 mm</td></tr>
+              <tr><th>Depth: median abs. error</th><td><strong>0.10 mm</strong> (13 %)</td><td>0.46 mm</td></tr>
+              <tr><th>Depth: correlation</th><td><strong>0.93</strong></td><td>0.31</td></tr>
+              <tr><th>Width at half depth: median error</th><td><strong>0.14 mm</strong></td><td>not measurable</td></tr>
+              <tr><th>Detection precision / recall</th><td><strong>0.96 / 0.97</strong></td><td>n/a</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="pj-fig">
+          <img src="validation.png" alt="Scatter plots of measured vs true crack depth for photometric stereo and the single-photo method, and depth error by depth-to-width ratio" loading="lazy" width="1800" height="552">
+        </figure>
+        <div class="pj-two">
+          <div>
+            <h3>Where it fails</h3>
+            <p>In a crack that is deep compared with its width (depth/width &gt; 0.8), the bottom is in shadow in most photos and cannot be seen. Depth is then underestimated by about 0.7 mm: <strong>for narrow, deep cracks the measured depth is a lower bound.</strong></p>
+          </div>
+          <div>
+            <h3>Robustness</h3>
+            <ul>
+              <li>Light elevation off by ±5° → depth shifts by ~0.1 mm</li>
+              <li>6× more sensor noise → MAE 0.16 → 0.19 mm</li>
+              <li>3 lights instead of 4 → MAE 0.19 mm (no spare light for shadows)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OWN PHOTOS -->
+    <section class="section alt" id="own">
+      <div class="wrap">
+        <p class="kicker">Try your own</p>
+        <h2>Analyse your own four photos</h2>
+        <div class="pj-two">
+          <div>
+            <ol class="pj-guide">
+              <li>Phone on a tripod or a stack of books, <strong>looking straight down</strong>. Lock focus and exposure.</li>
+              <li>Put a <strong>ruler</strong> in the picture to get the pixel size.</li>
+              <li>Darken the room. Hold a torch at the same distance each time, as far away as practical, about <strong>45° above the surface</strong>.</li>
+              <li>Take four photos: light from the <strong>top</strong> of the image, then <strong>right</strong>, <strong>bottom</strong>, <strong>left</strong>.</li>
+            </ol>
+            <p class="pj-foot">Photos are processed on your device and never uploaded. Large photos are scaled to 640 px wide; the pixel size is adjusted automatically.</p>
+          </div>
+          <form class="pj-card pj-form" id="ownForm">
+            <div class="pj-files">
+              <label>Light from top<input type="file" accept="image/*" data-i="0" required></label>
+              <label>Light from right<input type="file" accept="image/*" data-i="1" required></label>
+              <label>Light from bottom<input type="file" accept="image/*" data-i="2" required></label>
+              <label>Light from left<input type="file" accept="image/*" data-i="3" required></label>
+            </div>
+            <div class="pj-fields">
+              <label>Pixel size (original photo) <span><input type="number" id="ownPx" value="0.08" min="0.001" step="0.001" inputmode="decimal"> mm/px</span></label>
+              <label>Light elevation <span><input type="number" id="ownEl" value="45" min="10" max="80" step="1" inputmode="numeric"> °</span></label>
+              <label>Remove broad shape <span><input type="number" id="ownDet" value="30" min="0" step="1" inputmode="numeric"> mm</span></label>
+            </div>
+            <div class="cd-actions">
+              <button type="submit" class="btn btn-primary btn-sm">Analyse my photos</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="backDemo" hidden>Back to demo scene</button>
+            </div>
+            <p class="pj-foot" id="ownMsg" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">© <span id="year">2026</span> Oumayma El Moussaoui · <a href="../../">Portfolio</a></div>
+  </footer>
+
+  <script src="../../assets/main.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/OrbitControls.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
