@@ -268,3 +268,4 @@ p { margin: 0 0 1rem; }
 .card-live { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
 .live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2fbf71; margin-right: 6px; vertical-align: 1px; box-shadow: 0 0 0 3px color-mix(in srgb, #2fbf71 25%, transparent); }
 .live-btn { align-self: flex-start; margin-top: 4px; }
+.live-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 4px; }
