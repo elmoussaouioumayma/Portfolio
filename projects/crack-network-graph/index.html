@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crack Network Graph · Oumayma El Moussaoui</title>
+  <meta name="description" content="Live demo: drop a photo of a cracked surface and get the crack network back as a measured graph, with T / Y / X junctions, closed cells and vector export. Runs in your browser.">
+  <meta property="og:title" content="Crack Network Graph: crack images to measured graphs">
+  <meta property="og:description" content="Pixels to vectors: junction types, closed cells, lengths and directions. Validated on 30 images with a known network.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5f5c'/%3E%3Cpath d='M6 9 L13 15 L11 23 M13 15 L20 13 L26 19 M20 13 L22 6' stroke='%23f4efe6' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link rel="stylesheet" href="../crack-depth-explorer/app.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="../../" aria-label="Back to portfolio">
+        <span class="brand-mark" aria-hidden="true">OE</span>
+        <span>Oumayma El Moussaoui</span>
+      </a>
+      <nav aria-label="Page">
+        <ul class="nav-links">
+          <li><a href="#live">Live demo</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#validation">Validation</a></li>
+          <li><a href="https://github.com/elmoussaouioumayma/crack-network-graph" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="../../#projects">← All projects</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="pj-hero">
+      <div class="wrap">
+        <p class="eyebrow">Project · Computer vision · Graph analysis</p>
+        <h1>Crack Network Graph</h1>
+        <p class="lede">Drop a photo of a cracked surface and get the crack network back as a <strong>measured graph</strong>: every crack segment becomes an edge, every junction a node. Lengths, widths and directions, the <strong>type of every junction (T, Y or X)</strong> and the <strong>closed cells</strong> between cracks, and the junction types tell <em>how</em> the network formed.</p>
+        <dl class="stats pj-stats">
+          <div><dt>Junctions found</dt><dd>0.92 <span>/ 0.97 R / P</span></dd></div>
+          <div><dt>T vs Y type correct</dt><dd>90 <span>%</span></dd></div>
+          <div><dt>Formation recognised</dt><dd>30 <span>/ 30 images</span></dd></div>
+        </dl>
+        <div class="cta pj-cta">
+          <a class="btn btn-primary" href="#live">Try it live</a>
+          <a class="btn btn-ghost" href="https://github.com/elmoussaouioumayma/crack-network-graph" target="_blank" rel="noopener">Code on GitHub ↗</a>
+        </div>
+        <ul class="chips"><li>Python</li><li>OpenCV</li><li>scikit-image</li><li>NetworkX</li><li>Gradio</li><li>GeoJSON / GraphML</li></ul>
+      </div>
+    </section>
+
+    <section class="section pj-live" id="live">
+      <div class="wrap">
+        <p class="kicker">Live demo</p>
+        <h2>Pixels in, graph out</h2>
+        <p class="pj-intro">Pick an example or drop your own photo (dried mud, glaze, old paint, concrete, a road…). The full pipeline runs in your browser; nothing is uploaded. The examples are generated images with a <strong>known network</strong>, so the page scores its own result.</p>
+
+        <div class="ng-pick" id="pick" role="group" aria-label="Choose an image">
+          <!-- examples filled by app.js -->
+          <label class="ng-drop" id="drop" tabindex="0">
+            <input type="file" id="file" accept="image/*">
+            <span class="ng-drop-icon" aria-hidden="true">＋</span>
+            <span>Your photo<br><small>click or drop</small></span>
+          </label>
+        </div>
+
+        <details class="pj-card ng-settings" id="settings">
+          <summary>Settings</summary>
+          <div class="ng-set-grid">
+            <div class="cd-ctl">
+              <label>Cracks are … than the surface</label>
+              <div class="cd-views ng-seg" role="group" aria-label="Crack polarity">
+                <button type="button" data-pol="auto" aria-pressed="true">auto</button>
+                <button type="button" data-pol="dark" aria-pressed="false">darker</button>
+                <button type="button" data-pol="light" aria-pressed="false">lighter</button>
+              </div>
+            </div>
+            <div class="cd-ctl"><label for="maxw">Widest crack <output id="maxwOut">15 px</output></label><input type="range" id="maxw" min="3" max="40" step="1" value="15"></div>
+            <div class="cd-ctl"><label for="sens">Sensitivity <output id="sensOut">1.00</output></label><input type="range" id="sens" min="0.5" max="2" step="0.05" value="1"></div>
+            <div class="cd-ctl"><label for="prune">Remove dead ends shorter than <output id="pruneOut">12 px</output></label><input type="range" id="prune" min="0" max="40" step="1" value="12"></div>
+            <div class="cd-ctl"><label for="bridge">Close gaps up to <output id="bridgeOut">15 px</output></label><input type="range" id="bridge" min="0" max="40" step="1" value="15"></div>
+            <div class="cd-ctl"><label for="ppm">Scale <span class="ng-ppm"><input type="number" id="ppm" value="0" min="0" step="0.1" inputmode="decimal"> px per mm <small>(0 = pixels)</small></span></label></div>
+          </div>
+        </details>
+
+        <div class="ng-results">
+          <div class="pj-viewer">
+            <div class="cd-toolbar">
+              <div class="cd-views" role="group" aria-label="Graph colouring">
+                <button type="button" data-g="type" aria-pressed="true">Graph · junction types</button>
+                <button type="button" data-g="dir" aria-pressed="false">Graph · directions</button>
+                <button type="button" data-g="photo" aria-pressed="false">Photo</button>
+              </div>
+              <span class="cd-time" id="timing"></span>
+            </div>
+            <div class="pj-canvas-wrap">
+              <canvas id="graph" width="900" height="640" aria-label="Crack network as a graph"></canvas>
+              <div class="pj-busy" id="busy" hidden><span></span>Building the graph…</div>
+            </div>
+            <div class="pj-legend ng-legend">Junctions: <i class="dot" style="background:#ff8c00"></i>T (≈ 90° / 180°) <i class="dot" style="background:#1e90ff"></i>Y (≈ 120°) <i class="dot" style="background:#ba55d3"></i>X (4 cracks) <i class="ring"></i>crack end</div>
+          </div>
+          <div class="pj-viewer">
+            <div class="cd-toolbar"><strong class="ng-title">Closed cells by number of corners</strong></div>
+            <canvas id="cells" width="900" height="640" aria-label="Closed cells coloured by number of corners"></canvas>
+            <div class="pj-legend ng-legend">Corners: <i class="sq" style="background:#f4a259"></i>3 <i class="sq" style="background:#e9c46a"></i>4 <i class="sq" style="background:#8ab17d"></i>5 <i class="sq" style="background:#2a9d8f"></i>6 <i class="sq" style="background:#264653"></i>7+ <i class="sq" style="background:#ebebeb;border:1px solid #bbb"></i>open</div>
+          </div>
+        </div>
+
+        <div class="ng-story" id="story" role="status"></div>
+
+        <div class="ng-row">
+          <dl class="cd-metrics ng-metrics" id="metrics"></dl>
+          <div class="pj-card pj-acc" id="accuracy">
+            <h3>Accuracy vs. the known network</h3>
+            <table><tbody id="accBody"></tbody></table>
+            <p class="pj-foot">Junctions matched within 10 px (12 px margin), as in the validation.</p>
+          </div>
+        </div>
+
+        <div class="ng-charts" id="charts">
+          <figure class="pj-card"><figcaption id="c1t">Crack directions</figcaption><canvas id="c1" width="300" height="240"></canvas></figure>
+          <figure class="pj-card"><figcaption id="c2t">Angles at 3-way junctions</figcaption><canvas id="c2" width="300" height="240"></canvas></figure>
+          <figure class="pj-card"><figcaption id="c3t">Corners per closed cell</figcaption><canvas id="c3" width="300" height="240"></canvas></figure>
+          <figure class="pj-card"><figcaption id="c4t">Cell size</figcaption><canvas id="c4" width="300" height="240"></canvas></figure>
+        </div>
+
+        <div class="pj-card ng-dl">
+          <h3>Download the network as vectors</h3>
+          <div class="cd-actions">
+            <button type="button" class="btn btn-ghost btn-sm" data-dl="geojson">GeoJSON</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-dl="csv">Segments CSV</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-dl="graphml">GraphML</button>
+            <button type="button" class="btn btn-ghost btn-sm" data-dl="json">Summary JSON</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="how">
+      <div class="wrap">
+        <p class="kicker">How it works</p>
+        <h2>From pixels to a graph</h2>
+        <p class="pj-intro">Pixel-based crack analysis gives numbers like "8 % of the area is cracked". A graph describes the <strong>structure</strong>. When cracks appear <strong>one after another</strong>, each new crack runs into an older one at about 90° (<strong>T junctions</strong>). Cracks that form <strong>at the same time</strong>, or a network that matures over repeated drying and wetting, meet at about 120° (<strong>Y junctions</strong>).</p>
+        <figure class="pj-fig"><img src="pipeline.jpg" alt="Pipeline: photo, crack mask, skeleton, graph with typed junctions, closed cells coloured by corners" loading="lazy" width="2000" height="390"></figure>
+        <ol class="pj-steps">
+          <li><span>Grey image</span>Colour → one channel along the first principal component; cracks often differ in colour more than in brightness.</li>
+          <li><span>Crack mask</span>Black-hat (dark cracks) or top-hat (light cracks); polarity chosen automatically by the heavier tail. Hysteresis: Otsu starts a crack, 65 % continues one. Round spots removed.</li>
+          <li><span>Skeleton → graph</span>Pixels with 3+ neighbours become junction nodes, 1-neighbour pixels crack ends; traced paths become edges.</li>
+          <li><span>Clean-up</span>Width-aware spur pruning, gap bridging along the crack direction, merging of junctions closer than the crack width.</li>
+          <li><span>Junction type</span>T if one angle ≥ 150°, otherwise Y; X for 4+ branches.</li>
+          <li><span>Cells</span>Regions enclosed by the network; each junction angle &lt; 155° is a corner of the cell that fills it.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="validation">
+      <div class="wrap">
+        <p class="kicker">Validation</p>
+        <h2>30 generated images with a known network</h2>
+        <p class="pj-intro">Real photos come without a "true" graph, so a generator creates crack networks whose structure is known: 3 surfaces (dried mud, crazed glaze, old paint with <em>light</em> cracks) × 2 formation types (sequential → T, simultaneous Voronoi → Y), bent with a smooth random warp. Default settings throughout.</p>
+        <div class="pj-table-wrap">
+          <table class="pj-table pj-val">
+            <thead><tr><th></th><th>All 30 images</th><th>T-type networks</th><th>Y-type networks</th></tr></thead>
+            <tbody>
+              <tr><th>Junctions found (recall / precision, 10 px)</th><td><strong>0.92 / 0.97</strong></td><td>0.91 / 0.94</td><td>0.94 / 0.99</td></tr>
+              <tr><th>Junction type correct (T vs Y)</th><td><strong>90 %</strong></td><td>92 %</td><td>88 %</td></tr>
+              <tr><th>Measured share of T junctions</th><td></td><td><strong>0.92</strong> (true 1.00)</td><td><strong>0.14</strong> (true 0.00)</td></tr>
+              <tr><th>Mean corners per closed cell</th><td></td><td><strong>4.2</strong></td><td><strong>5.4</strong></td></tr>
+              <tr><th>Closed cells: median count error</th><td>4.5 %</td><td>10 %</td><td>0 %</td></tr>
+              <tr><th>Total crack length: median error</th><td>3.7 % (too short)</td><td>4.9 %</td><td>3.4 %</td></tr>
+              <tr><th>Crack polarity detected</th><td><strong>30 / 30</strong></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="pj-fig"><img src="validation.png" alt="Measured share of T junctions and corners per cell for both formation types, and measured vs true number of closed cells" loading="lazy" width="1650" height="462"></figure>
+        <div class="pj-two">
+          <div>
+            <h3>Limitations</h3>
+            <ul>
+              <li>Total length is slightly underestimated (crack ends and junction centres are shortened).</li>
+              <li>Faint hairline cracks are partly missed.</li>
+              <li>Two T junctions very close together can merge into one X.</li>
+              <li>The validation images are generated, not photographs.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Background</h3>
+            <p>Builds on the methods of my master's thesis on vectorisation of crack networks (pixel → graph); this is a new, independent implementation, and all images are generated.</p>
+            <p class="pj-foot">Bohn, Pauchard &amp; Couder 2005, <em>Phys. Rev. E</em> 71, 046214 · Goehring, arXiv:1211.6762 · Sidorov &amp; Hardeberg 2019, ICCV Workshops, arXiv:1905.05010</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">© <span id="year">2026</span> Oumayma El Moussaoui · <a href="../../">Portfolio</a></div>
+  </footer>
+
+  <script src="../../assets/main.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
