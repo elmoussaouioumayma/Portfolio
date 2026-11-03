@@ -1,0 +1,9 @@
+# Private CV details and the compiled CV stay out of the public repo
+personal.tex
+photo.png
+*.pdf
+*.zip
+*.aux
+*.log
+*.out
+Oumayma_El_Moussaoui_CV.tex

@@ -1,0 +1,151 @@
+% CV · Oumayma El Moussaoui · Machine Learning Engineer version
+% Compile with: pdflatex cv_ml_engineer.tex
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,top=11mm,bottom=11mm,left=14mm,right=14mm]{geometry}
+\input{glyphtounicode}\pdfgentounicode=1   % correct Unicode text for ATS parsers
+\pdfinterwordspaceon \pdffakespace          % real space characters between words
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={CV - Oumayma El Moussaoui},pdfauthor={Oumayma El Moussaoui},
+  pdfsubject={Curriculum Vitae},pdfkeywords={Data Scientist, Machine Learning, Computer Vision, Python}}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedright
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=3em
+
+% Section headings: large, with a full-width rule underneath
+\titleformat{\section}{\Large\bfseries}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{3pt}
+
+% Bullets
+\setlist[itemize]{leftmargin=12pt,labelsep=5pt,itemsep=0.5pt,topsep=1pt,parsep=0pt,partopsep=0pt}
+
+% \org{Organisation}{Dates}{Role or unit}{Location}
+\newcommand{\org}[4]{%
+  \par\vspace{4pt}\noindent\textbf{#1}\hfill #2\par
+  \noindent\textit{#3}\hfill\textit{#4}\par}
+% \role{Role}{Dates}: a position within the organisation above
+\newcommand{\role}[2]{\par\vspace{1pt}\noindent\textbf{#1}\hfill\textit{#2}\par}
+% \project{Name}{Tech stack}
+\newcommand{\project}[2]{\par\needspace{4\baselineskip}\vspace{4pt}\noindent\textbf{#1}\hfill\textit{#2}\par}
+
+% \projectx{Name}{Right-hand note}{Tech stack}: project with the stack on an italic line below
+\newcommand{\projectx}[3]{\project{#1}{#2}\noindent\textit{Stack: #3}\par}
+\newcommand{\sep}{\ \textbar\ }
+
+\begin{document}
+
+% ---------- header ----------
+\begin{center}
+  {\fontsize{24}{28}\selectfont Oumayma El Moussaoui}\par\vspace{4pt}
+  {\small
+  Aalen, Germany\sep
+  \href{mailto:oma98yma@gmail.com}{oma98yma@gmail.com}\par
+  Portfolio: \href{https://elmoussaouioumayma.github.io/Portfolio/}{elmoussaouioumayma.github.io/Portfolio}\sep
+  GitHub: \href{https://github.com/elmoussaouioumayma}{github.com/elmoussaouioumayma}\par}
+  \vspace{4pt}
+  \textbf{Machine Learning Engineer \textbar\ Data Scientist}\par
+\end{center}
+\vspace{-6pt}
+
+% ---------- profile ----------
+\section{Profile}
+ML engineer with an \textbf{M.Sc. in Machine Learning \& Data Analytics} and an engineering background. I build \textbf{machine-learning and computer-vision systems end to end}, from data and model to validation, deployment as a working application and hand-over to non-technical users. My focus is on \textbf{results that can be trusted in production}: leakage-free evaluation, grouped cross-validation, testing against known ground truth, and metrics chosen for the real use case (e.g. recall-oriented thresholds in health screening). I enjoy working with domain experts and \textbf{taking ownership of a system} from first idea to the version people rely on.
+
+% ---------- experience ----------
+\section{Experience}
+\org{Hochschule Aalen}{Nov 2024 -- present}{Zentrum Elektrochemische Oberflächentechnik (ZEO) · Machine Learning \& Image Analysis}{Aalen}
+\role{Academic Employee (Wissenschaftliche Mitarbeiterin)}{Feb 2026 -- present}
+\role{Student Research Assistant}{Nov 2024 -- Jan 2026}
+\begin{itemize}
+  \item \textbf{Own the image-analysis software} that automatically detects, classifies and measures cracks in microscope images of chromium coatings, from requirements to the tools researchers use every day.
+  \item \textbf{Replaced manual annotation (2--2.5 h per image)} with an automated, validated Python pipeline; \textbf{chamfer distance to manual ground truth < 0.08 µm}.
+  \item Built \textbf{self-service tools} for researchers: live parameter tuning, batch processing with CSV export, depth and width profiles along cracks.
+  \item Analyse process and measurement data from electroplating experiments and \textbf{present results to chemists and engineers}.
+  \item Model process knowledge as an \textbf{ontology (Protégé/OWL)} so experimental data can be structured and reused.
+\end{itemize}
+
+\org{Excellence Hub}{Sep 2021 -- Nov 2021}{Engineering Intern -- Energy Efficiency}{El Jadida, Morocco}
+\begin{itemize}
+  \item \textbf{Energy audit} of an industrial plant: collected and analysed consumption data, \textbf{quantified losses} and proposed savings measures.
+\end{itemize}
+
+\org{LafargeHolcim}{Apr 2019 -- Jun 2019}{Engineering Intern -- Thermal Processes}{Meknes, Morocco}
+\begin{itemize}
+  \item Analysed \textbf{thermal losses of a cement kiln} and evaluated insulation options.
+\end{itemize}
+
+\org{OCP Group}{Apr 2018 -- May 2018}{Technical Intern -- Process Performance}{Khouribga, Morocco}
+\begin{itemize}
+  \item Monitored an industrial grinder and proposed \textbf{cost-effective measures} to improve its performance.
+\end{itemize}
+
+% ---------- projects ----------
+\section{Projects (github.com/elmoussaouioumayma)}
+\projectx{Crack Depth Explorer -- 3D measurement from four photos}{2026 · live web app}{Python, NumPy/SciPy, OpenCV, scikit-image, JavaScript, Three.js}
+\begin{itemize}
+  \item \textbf{End-to-end computer-vision system}: photometric stereo reconstructs the 3D surface from four photos, then every crack is detected and measured in millimetres (depth, width, length).
+  \item Built a \textbf{synthetic data generator with known 3D ground truth} to evaluate the pipeline objectively on 20 unseen scenes (41,299 test points).
+  \item \textbf{0.21 mm mean depth error}, \textbf{2.6× more accurate} than a single-photo baseline; detection precision / recall \textbf{0.96 / 0.97}. Deployed as an in-browser application.
+\end{itemize}
+
+\projectx{Crack Network Graph -- from pixels to a measured graph}{2026 · live web app}{Python, OpenCV, scikit-image, NetworkX, Gradio, JavaScript}
+\begin{itemize}
+  \item Turns a photo of a cracked surface into a \textbf{graph} (segments = edges, junctions = nodes) with lengths, widths, directions, T / Y / X junction types and closed cells; exports GeoJSON, GraphML and CSV.
+  \item Evaluated on 30 generated images with a known network: junction recall / precision \textbf{0.92 / 0.97}, \textbf{90\% junction types correct}, formation type recognised in \textbf{30 / 30} images.
+\end{itemize}
+
+\projectx{Dark Pattern Detection in User Interfaces -- NLP}{}{Python, scikit-learn, Hugging Face Transformers, TF-IDF, OCR, Gradio}
+\begin{itemize}
+  \item Text classifier for manipulative website content; \textbf{cross-validation grouped by website} to prevent train/test leakage. Gradio app that also reads screenshots via OCR. \textbf{97.3\% test F1}.
+\end{itemize}
+
+\projectx{Diabetes Prediction -- ML for health screening}{}{Python, scikit-learn, XGBoost, pandas}
+\begin{itemize}
+  \item Compared six models in \textbf{leakage-free pipelines} and \textbf{tuned the decision threshold for screening}, where a missed case costs more than a false alarm. \textbf{CV AUC 0.84}, \textbf{85\% recall} on the test set.
+\end{itemize}
+
+\projectx{Fake vs. Real News Detection -- data quality \& NLP}{}{Python, scikit-learn, TF-IDF}
+\begin{itemize}
+  \item \textbf{Found and removed data leakage} (5,498 duplicates, source markers revealing the label), then trained TF-IDF + Logistic Regression and tested it on newly scraped articles. \textbf{97.1\% accuracy} after cleaning.
+\end{itemize}
+
+\projectx{Coating Layer Analysis -- image analysis}{}{Python, image analysis, statistical modelling}
+\begin{itemize}
+  \item Detects coating layers in cross-section images, traces their boundaries and measures thickness; layer count chosen with a \textbf{statistical model (BIC)}. Web app and batch tool. \textbf{95\% correct layer count}, \textbf{0.66 µm median boundary error} (100 test images).
+\end{itemize}
+
+% ---------- skills ----------
+\section{Skills}
+\textbf{Programming:} Python (pandas, NumPy, SciPy), SQL, R, JavaScript, Git/GitHub, Jupyter\par
+\textbf{Machine learning:} scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers), model evaluation, grouped cross-validation, leakage detection, threshold tuning\par
+\textbf{Computer vision:} OpenCV, scikit-image: segmentation, 3D reconstruction (photometric stereo), skeletonization, graph extraction (NetworkX)\par
+\textbf{ML lifecycle:} End-to-end pipelines, synthetic ground truth for validation, batch processing, interactive apps (Gradio, web), reproducible reporting\par
+\textbf{Data \& BI:} Power BI, matplotlib, data cleaning, data quality analysis, ontologies (Protégé/OWL)\par
+\textbf{Engineering:} Energy audits, thermal analysis, COMSOL, PVsyst, AutoCAD, SolidWorks\par
+\textbf{Languages:} Arabic (native), French (fluent), English (fluent), German (B2, telc)\par
+
+% ---------- education ----------
+\section{Education}
+\org{Hochschule Aalen}{2024 -- 2026}{M.Sc. Machine Learning and Data Analytics}{Aalen, Germany}
+\noindent Thesis: \textit{Optimized Image Processing for Quantitative Crack Analysis in Chromium Layers} -- automated pipeline (5 segmentation methods compared, skeleton-to-graph vectorisation, measurement in µm), validated against manual ground truth on 20 images.\par
+\org{ENSIAS}{2021 -- 2022}{Doctoral studies in Energy Engineering (1 year, not continued)}{Rabat, Morocco}
+\noindent Research on radiative sky cooling with emissive materials.\par
+\org{ENSAM}{2019 -- 2021}{Master's in Energy and Environmental Sciences}{Rabat, Morocco}
+\org{ENS}{2018 -- 2019}{Bachelor's in Physical Energy Technologies}{Rabat, Morocco}
+
+\vspace{5pt}
+\textbf{Certificates:} Data Engineer -- DataCamp (2023); Data Analyst -- Google (2022).\par
+
+\end{document}

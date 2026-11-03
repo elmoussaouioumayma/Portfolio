@@ -1,0 +1,160 @@
+% CV · Oumayma El Moussaoui
+% Compile with: pdflatex cv.tex
+% The phone number lives in personal.tex, which is kept out of the public repo.
+% Without it the CV still compiles (the phone number is left out).
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,top=11mm,bottom=11mm,left=14mm,right=14mm]{geometry}
+\input{glyphtounicode}\pdfgentounicode=1   % correct Unicode text for ATS parsers
+\pdfinterwordspaceon \pdffakespace          % real space characters between words
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={CV - Oumayma El Moussaoui},pdfauthor={Oumayma El Moussaoui},
+  pdfsubject={Curriculum Vitae},pdfkeywords={Data Scientist, Machine Learning, Computer Vision, Python}}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedright
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=3em
+
+% Section headings: large, with a full-width rule underneath
+\titleformat{\section}{\Large\bfseries}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{3pt}
+
+% Bullets
+\setlist[itemize]{leftmargin=12pt,labelsep=5pt,itemsep=0.5pt,topsep=1pt,parsep=0pt,partopsep=0pt}
+
+% \org{Organisation}{Dates}{Role or unit}{Location}
+\newcommand{\org}[4]{%
+  \par\vspace{4pt}\noindent\textbf{#1}\hfill #2\par
+  \noindent\textit{#3}\hfill\textit{#4}\par}
+% \role{Role}{Dates}: a position within the organisation above
+\newcommand{\role}[2]{\par\vspace{1pt}\noindent\textbf{#1}\hfill\textit{#2}\par}
+% \project{Name}{Tech stack}
+\newcommand{\project}[2]{\par\vspace{4pt}\noindent\textbf{#1}\hfill\textit{#2}\par}
+
+\IfFileExists{personal.tex}{\input{personal.tex}}{\newcommand{\cvphone}{}}
+\newcommand{\sep}{\ \textbar\ }
+
+\begin{document}
+
+% ---------- header ----------
+\begin{center}
+  {\fontsize{24}{28}\selectfont Oumayma El Moussaoui}\par\vspace{4pt}
+  {\small
+  Aalen, Germany\sep \ifx\cvphone\empty\else\cvphone\sep\fi
+  \href{mailto:oma98yma@gmail.com}{oma98yma@gmail.com}\sep
+  \href{https://www.linkedin.com/in/oumayma-el-9aa463375}{linkedin.com/in/oumayma-el-9aa463375}\par
+  \href{https://github.com/elmoussaouioumayma}{github.com/elmoussaouioumayma}\sep
+  \href{https://elmoussaouioumayma.github.io/Portfolio/}{elmoussaouioumayma.github.io/Portfolio}\par}
+  \vspace{4pt}
+  \textbf{Data Scientist \textbar\ Image \& Measurement Data \textbar\ Engineering Background}\par
+\end{center}
+\vspace{-6pt}
+
+% ---------- profile ----------
+\section{Profile}
+Data scientist with two master's degrees, one in \textbf{Machine Learning \& Data Analytics} (Hochschule Aalen) and one in \textbf{Energy Engineering}, and industrial experience in cement, mining and manufacturing plants. I turn raw image and measurement data into \textbf{reliable numbers that engineers can act on}. I work in \textbf{Python}, validate my results carefully, and am used to working with chemists, materials scientists and process engineers.
+
+% ---------- experience ----------
+\section{Experience}
+\org{Hochschule Aalen}{Nov 2024 -- present}{Zentrum Elektrochemische Oberflächentechnik (ZEO)}{Aalen}
+\role{Academic Employee (Wissenschaftliche Mitarbeiterin)}{Feb 2026 -- present}
+\role{Student Research Assistant}{Nov 2024 -- Jan 2026}
+\begin{itemize}
+  \item Develop \textbf{image-analysis software} (Python, OpenCV, scikit-image) that automatically \textbf{detects, classifies and measures cracks} in microscope images of chromium coatings.
+  \item Build \textbf{interactive tools} that researchers can use themselves: live parameter tuning, batch processing with CSV export, depth and width profiles along cracks.
+  \item Analyse process and measurement data from chromium electroplating experiments and \textbf{present the results to chemists and engineers}.
+  \item Model electroplating process knowledge as an \textbf{ontology (Protégé/OWL)} so that experimental data can be structured and reused.
+\end{itemize}
+
+\org{Excellence Hub}{Sep 2021 -- Nov 2021}{Engineering Intern: Energy Efficiency}{El Jadida, Morocco}
+\begin{itemize}
+  \item Carried out an \textbf{energy audit} of an industrial plant (MAZAFIL): collected and analysed consumption data, \textbf{quantified the energy losses} and proposed savings measures.
+\end{itemize}
+
+\org{LafargeHolcim}{Apr 2019 -- Jun 2019}{Engineering Intern: Thermal Processes}{Meknes, Morocco}
+\begin{itemize}
+  \item Analysed the \textbf{thermal losses of a cement kiln} and evaluated insulation options to reduce them.
+\end{itemize}
+
+\org{OCP Group}{Apr 2018 -- May 2018}{Technical Intern: Process Performance}{Khouribga, Morocco}
+\begin{itemize}
+  \item Monitored the operation of an industrial grinder and proposed \textbf{cost-effective measures} to improve its performance.
+\end{itemize}
+
+% ---------- projects ----------
+\section{Projects (github.com/elmoussaouioumayma)}
+\project{Master's Thesis: Quantitative Crack Analysis in Chromium Layers}{Python, OpenCV, scikit-image}
+\begin{itemize}
+  \item \textit{Optimized Image Processing for Quantitative Crack Analysis in Chromium Layers} (Hochschule Aalen, 2026): automated Python pipeline that turns microscope images of hard-chromium coatings into crack measurements, \textbf{replacing manual annotation (2 to 2.5 hours per image)}.
+  \item Segmentation (5 classical methods compared, top-hat and Otsu selected), \textbf{vectorization into a crack graph}, then crack length, density and junction angles in µm.
+  \item Validated against manual ground truth: \textbf{chamfer distance under 1.77 px (approx. 0.08 µm)} on 7 of 8 images. Crack density on 20 images (564 +/- 70 cracks/cm) lies within the published range for hard chromium.
+\end{itemize}
+
+\project{Crack Depth Explorer: 3D Crack Measurement from Four Photos}{Python, NumPy/SciPy, OpenCV}
+\begin{itemize}
+  \item Measures cracks in 3D (depth, width and length in mm) from four photos taken with a fixed camera and moving light: \textbf{photometric stereo} reconstructs the surface, then every crack is detected and measured. For concrete, stone, plaster and asphalt; runs live in the browser.
+  \item On 20 test scenes with known depth: \textbf{0.21 mm mean depth error}, \textbf{2.6 times more accurate} than single-photo methods, detection precision / recall 0.96 / 0.97.
+\end{itemize}
+
+\project{Crack Network Graph: From Crack Images to Measured Graphs}{Python, OpenCV, scikit-image, NetworkX}
+\begin{itemize}
+  \item Turns a photo of a cracked surface into a \textbf{measured graph} (pixels to vectors): crack lengths, widths and directions, T / Y / X junctions and the closed cells between cracks; the junction types show how the network formed. Exports GeoJSON and GraphML; runs live in the browser.
+  \item On 30 images with a known network: \textbf{90\% of junction types correct}, formation type recognised in \textbf{30 of 30 images}.
+\end{itemize}
+
+\project{Coating Layer Analysis}{Python, image analysis, statistical modelling}
+\begin{itemize}
+  \item Detects the layers of a coating in cross-section images from changes in particle size and density, traces the wavy boundaries and measures the thickness of each layer; the number of layers is chosen with a \textbf{statistical model (BIC)}. Includes a web app and a batch tool.
+  \item On 100 test images with known layers: \textbf{95\% correct number of layers}, median boundary error 0.66 µm.
+\end{itemize}
+
+\project{Dark Pattern Detection in User Interfaces}{Python, NLP, OCR, Gradio}
+\begin{itemize}
+  \item Classifier for manipulative website texts. \textbf{Cross-validation grouped by website} prevents leakage between training and test data (\textbf{test F1 97.3\%}). Gradio app that also reads screenshots via OCR.
+\end{itemize}
+
+\project{Fake vs. Real News Detection (NLP)}{Python, scikit-learn, TF-IDF}
+\begin{itemize}
+  \item \textbf{Found and removed data leakage} (5,498 duplicates and source markers that revealed the label), then built a TF-IDF and Logistic Regression model with \textbf{97.1\% test accuracy} and tested it on newly scraped articles.
+\end{itemize}
+
+\project{Diabetes Prediction}{Python, scikit-learn, XGBoost}
+\begin{itemize}
+  \item Compared 6 models in \textbf{leak-free pipelines (CV AUC 0.84)} and tuned the decision threshold for screening, reaching \textbf{85\% recall} on the test set.
+\end{itemize}
+
+% ---------- skills ----------
+\section{Skills}
+\textbf{Programming:} Python (pandas, NumPy, SciPy), SQL, R, Git/GitHub, Jupyter\par
+\textbf{Image processing:} OpenCV, scikit-image: segmentation, morphological filtering, skeletonization, graph extraction, geometric measurement\par
+\textbf{Machine learning:} scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers); cross-validation, leakage checks, threshold tuning\par
+\textbf{Data \& visualisation:} Power BI, matplotlib, interactive tools (Gradio, matplotlib widgets), technical reporting\par
+\textbf{Engineering:} energy audits, thermal analysis, COMSOL, PVsyst, AutoCAD, SolidWorks; ontologies (Protégé/OWL)\par
+\textbf{Languages:} Arabic (native), French (fluent), English (fluent), German (B2, telc certificate)\par
+
+% ---------- education ----------
+\section{Education}
+\org{Hochschule Aalen}{2024 -- 2026}{M.Sc. Machine Learning and Data Analytics}{Aalen, Germany}
+\org{Intensive German Language Course}{2022 -- 2024}{telc Deutsch B2; preparation for master's studies in Germany}{}
+\org{ENSIAS}{2021 -- 2022}{Doctoral Studies in Energy Engineering (1 year of research, not continued)}{Rabat, Morocco}
+\noindent Research on radiative sky cooling with emissive materials.\par
+\org{ENSAM}{2019 -- 2021}{Master's in Energy and Environmental Sciences}{Rabat, Morocco}
+\noindent Thesis: fabrication and characterisation of emissive materials and testing of a night-time radiative cooling test bench.\par
+\org{ENS}{2018 -- 2019}{Bachelor's in Physical Energy Technologies}{Rabat, Morocco}
+\org{Technician Diploma in Energy Technologies}{2016 -- 2018}{}{Errachidia, Morocco}
+
+\vspace{5pt}
+\textbf{Certificates:} Data Engineer, DataCamp (2023); Data Analyst, Google (2022); First Aid, Red Crescent (2023).\par
+\textbf{Volunteering:} Finance manager of a cultural and social committee (2021); ALBASMA medical and humanitarian caravan (2020).\par
+
+\end{document}
