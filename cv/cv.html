@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Oumayma El Moussaoui · CV</title>
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm; }
+  :root { --ink:#1b1f23; --muted:#5a6168; --accent:#0f5f5c; --rule:#d6dadd; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:#fff; }
+  body { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; color:var(--ink); font-size:9.6pt; line-height:1.38; }
+  a { color:var(--accent); text-decoration:none; }
+  header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid var(--accent); padding-bottom:6px; margin-bottom:8px; }
+  h1 { font-size:21pt; margin:0; letter-spacing:-.2px; font-weight:700; }
+  .role { font-size:11pt; color:var(--accent); font-weight:600; margin-top:1px; }
+  .contact { text-align:right; font-size:8.9pt; color:var(--muted); line-height:1.5; }
+  .contact strong { color:var(--ink); font-weight:600; }
+  h2 { font-size:10.2pt; text-transform:uppercase; letter-spacing:1.1px; color:var(--accent); margin:11px 0 5px; padding-bottom:2px; border-bottom:1px solid var(--rule); }
+  p { margin:0 0 4px; }
+  .summary { font-size:9.7pt; }
+  .entry { margin-bottom:7px; break-inside:avoid; }
+  .row { display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+  .title { font-weight:700; font-size:9.9pt; }
+  .when { color:var(--muted); font-size:8.8pt; white-space:nowrap; }
+  .org { color:var(--muted); font-style:italic; font-size:9pt; }
+  ul { margin:2px 0 0; padding-left:14px; }
+  li { margin:1px 0; }
+  .stack { color:var(--muted); font-size:8.6pt; margin-top:2px; }
+  .stack b { color:var(--ink); font-weight:600; }
+  .skills { display:grid; grid-template-columns: 34mm 1fr; gap:2px 10px; font-size:9.2pt; }
+  .skills dt { font-weight:700; }
+  .skills dd { margin:0; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+  .edu .entry { margin-bottom:5px; }
+  .small { font-size:9pt; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Oumayma El Moussaoui</h1>
+    <div class="role">Machine Learning Engineer · Data Scientist</div>
+  </div>
+  <div class="contact">
+    Aalen, Germany · <strong>oma98yma@gmail.com</strong><br>
+    Portfolio: <a href="https://elmoussaouioumayma.github.io/Portfolio/">elmoussaouioumayma.github.io/Portfolio</a><br>
+    GitHub: <a href="https://github.com/elmoussaouioumayma">github.com/elmoussaouioumayma</a>
+  </div>
+</header>
+
+<section>
+  <h2>Profile</h2>
+  <p class="summary">ML engineer with an M.Sc. in Machine Learning &amp; Data Analytics and an engineering background. I build machine-learning and computer-vision systems end to end, from data and model to validation, deployment as a working application and hand-over to non-technical users. My focus is on results that can be trusted in production: leakage-free evaluation, grouped cross-validation, testing against known ground truth, and metrics chosen for the real use case (e.g. recall-oriented thresholds in health screening). I enjoy working with domain experts and taking ownership of a system from first idea to the version people rely on.</p>
+</section>
+
+<section>
+  <h2>Experience</h2>
+
+  <div class="entry">
+    <div class="row"><span class="title">Academic Employee – Machine Learning &amp; Image Analysis</span><span class="when">Nov 2024 – present</span></div>
+    <div class="org">Zentrum Elektrochemische Oberflächentechnik (ZEO), Hochschule Aalen · Wissenschaftliche Mitarbeiterin since Feb 2026, previously Student Research Assistant</div>
+    <ul>
+      <li>Own the image-analysis software that automatically detects, classifies and measures cracks in microscope images of chromium coatings, from requirements to the tools researchers use every day.</li>
+      <li>Replaced manual annotation (2–2.5 h per image) with an automated, validated Python pipeline; chamfer distance to manual ground truth &lt; 0.08 µm.</li>
+      <li>Built self-service tools for researchers: live parameter tuning, batch processing with CSV export, depth and width profiles along cracks.</li>
+      <li>Analyse process and measurement data from electroplating experiments and present results to chemists and engineers.</li>
+      <li>Model process knowledge as an ontology (Protégé/OWL) so experimental data can be structured and reused.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Engineering Intern – Energy Efficiency</span><span class="when">Sep – Nov 2021</span></div>
+    <div class="org">Excellence Hub, El Jadida, Morocco</div>
+    <ul><li>Energy audit of an industrial plant: collected and analysed consumption data, quantified losses and proposed savings measures.</li></ul>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Engineering Intern – Thermal Processes</span><span class="when">Apr – Jun 2019</span></div>
+    <div class="org">LafargeHolcim, Meknes, Morocco</div>
+    <ul><li>Analysed thermal losses of a cement kiln and evaluated insulation options.</li></ul>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Technical Intern – Process Performance</span><span class="when">Apr – May 2018</span></div>
+    <div class="org">OCP Group, Khouribga, Morocco</div>
+    <ul><li>Monitored an industrial grinder and proposed cost-effective measures to improve its performance.</li></ul>
+  </div>
+</section>
+
+<section>
+  <h2>Projects <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted);font-size:8.8pt">· live demos and code on my portfolio and GitHub</span></h2>
+
+  <div class="entry">
+    <div class="row"><span class="title">Crack Depth Explorer – 3D measurement from four photos</span><span class="when">2026 · live web app</span></div>
+    <ul>
+      <li>End-to-end computer-vision system: photometric stereo reconstructs the 3D surface from four photos, then every crack is detected and measured in millimetres (depth, width, length).</li>
+      <li>Built a synthetic data generator with known 3D ground truth to evaluate the pipeline objectively on 20 unseen scenes (41,299 test points).</li>
+      <li><b>0.21 mm</b> mean depth error, <b>2.6×</b> more accurate than a single-photo baseline; detection precision / recall <b>0.96 / 0.97</b>. Deployed as an in-browser application.</li>
+    </ul>
+    <div class="stack"><b>Stack:</b> Python, NumPy/SciPy, OpenCV, scikit-image, JavaScript, Three.js</div>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Crack Network Graph – from pixels to a measured graph</span><span class="when">2026 · live web app</span></div>
+    <ul>
+      <li>Turns a photo of a cracked surface into a graph (segments = edges, junctions = nodes) with lengths, widths, directions, T / Y / X junction types and closed cells; exports GeoJSON, GraphML and CSV.</li>
+      <li>Evaluated on 30 generated images with a known network: junction recall / precision <b>0.92 / 0.97</b>, <b>90 %</b> junction types correct, formation type recognised in <b>30 / 30</b> images.</li>
+    </ul>
+    <div class="stack"><b>Stack:</b> Python, OpenCV, scikit-image, NetworkX, Gradio, JavaScript</div>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Dark Pattern Detection in User Interfaces – NLP</span></div>
+    <ul>
+      <li>Text classifier for manipulative website content; cross-validation grouped by website to prevent train/test leakage. Gradio app that also reads screenshots via OCR. <b>97.3 %</b> test F1.</li>
+    </ul>
+    <div class="stack"><b>Stack:</b> Python, scikit-learn, Hugging Face Transformers, TF-IDF, OCR, Gradio</div>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Diabetes Prediction – ML for health screening</span></div>
+    <ul>
+      <li>Compared six models in leakage-free pipelines and tuned the decision threshold for screening, where a missed case costs more than a false alarm. <b>CV AUC 0.84</b>, <b>85 %</b> recall on the test set.</li>
+    </ul>
+    <div class="stack"><b>Stack:</b> Python, scikit-learn, XGBoost, pandas</div>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Fake vs. Real News Detection – data quality &amp; NLP</span></div>
+    <ul>
+      <li>Found and removed data leakage (5,498 duplicates, source markers revealing the label), then trained TF-IDF + Logistic Regression and tested it on newly scraped articles. <b>97.1 %</b> accuracy after cleaning.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="row"><span class="title">Coating Layer Analysis – image analysis</span></div>
+    <ul>
+      <li>Detects coating layers in cross-section images, traces their boundaries and measures thickness; layer count chosen with a statistical model (BIC). Web app and batch tool. <b>95 %</b> correct layer count, <b>0.66 µm</b> median boundary error (100 test images).</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Skills</h2>
+  <dl class="skills">
+    <dt>Programming</dt><dd>Python (pandas, NumPy, SciPy), SQL, R, JavaScript, Git/GitHub, Jupyter</dd>
+    <dt>Machine learning</dt><dd>scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers), model evaluation, grouped cross-validation, leakage detection, threshold tuning</dd>
+    <dt>Computer vision</dt><dd>OpenCV, scikit-image: segmentation, 3D reconstruction (photometric stereo), skeletonization, graph extraction (NetworkX)</dd>
+    <dt>ML lifecycle</dt><dd>End-to-end pipelines, synthetic ground truth for validation, batch processing, interactive apps (Gradio, web), reproducible reporting</dd>
+    <dt>Data &amp; BI</dt><dd>Power BI, matplotlib, data cleaning, data quality analysis, ontologies (Protégé/OWL)</dd>
+    <dt>Engineering</dt><dd>Energy audits, thermal analysis, COMSOL, PVsyst, AutoCAD, SolidWorks</dd>
+  </dl>
+</section>
+
+<section class="edu">
+  <h2>Education</h2>
+  <div class="entry">
+    <div class="row"><span class="title">M.Sc. Machine Learning and Data Analytics</span><span class="when">2024 – 2026</span></div>
+    <div class="org">Hochschule Aalen, Germany</div>
+    <p class="small">Thesis: <i>Optimized Image Processing for Quantitative Crack Analysis in Chromium Layers</i> – automated pipeline (5 segmentation methods compared, skeleton-to-graph vectorisation, measurement in µm), validated against manual ground truth on 20 images.</p>
+  </div>
+  <div class="entry">
+    <div class="row"><span class="title">Doctoral studies in Energy Engineering (1 year, not continued)</span><span class="when">2021 – 2022</span></div>
+    <div class="org">ENSIAS, Rabat, Morocco · research on radiative sky cooling with emissive materials</div>
+  </div>
+  <div class="entry">
+    <div class="row"><span class="title">Master's in Energy and Environmental Sciences</span><span class="when">2019 – 2021</span></div>
+    <div class="org">ENSAM, Rabat, Morocco</div>
+  </div>
+  <div class="entry">
+    <div class="row"><span class="title">Bachelor's in Physical Energy Technologies</span><span class="when">2018 – 2019</span></div>
+    <div class="org">ENS, Rabat, Morocco</div>
+  </div>
+</section>
+
+<div class="two">
+  <section>
+    <h2>Languages</h2>
+    <p>Arabic (native) · French (fluent) · English (fluent) · German (B2, telc)</p>
+  </section>
+  <section>
+    <h2>Certificates</h2>
+    <p>Data Engineer – DataCamp (2023) · Data Analyst – Google (2022)</p>
+  </section>
+</div>
+
+</body>
+</html>
