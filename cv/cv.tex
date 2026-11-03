@@ -1,0 +1,212 @@
+% CV · Oumayma El Moussaoui
+% Compile with: pdflatex cv.tex
+% Private details (phone, address) live in personal.tex and the photo in photo.png;
+% both are kept out of the public repo. Without them the CV still compiles.
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,top=12mm,bottom=11mm,left=15mm,right=15mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[scaled=0.92]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{accent}{HTML}{2457B3}
+\definecolor{muted}{HTML}{5B6470}
+\definecolor{rulec}{HTML}{C9D0D8}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{1.05}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=3em
+
+% ---------- building blocks ----------
+\newlength{\labelw}\setlength{\labelw}{31mm}
+
+% Section: blue label in a left column, content to the right; breaks across pages.
+\newenvironment{cvsection}[1]{%
+  \par\vspace{4pt}{\color{rulec}\hrule height 0.5pt}\vspace{5pt}%
+  \begin{list}{}{\setlength{\leftmargin}{\labelw}\setlength{\labelwidth}{\labelw}%
+    \setlength{\labelsep}{0pt}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}%
+    \setlength{\parsep}{0pt}\setlength{\partopsep}{0pt}}%
+  \item[{\makebox[\labelw][l]{\color{accent}\bfseries\footnotesize\MakeUppercase{#1}}}]}%
+  {\end{list}}
+
+% Entry with date on the right
+\newcommand{\entry}[2]{\textbf{#1}\hfill{\color{muted}\small #2}\par}
+\newcommand{\subentry}[2]{#1\hfill{\color{muted}\small #2}\par}
+\newcommand{\where}[1]{{\color{muted}\small #1}\par}
+\newcommand{\gap}{\par\vspace{5pt}}
+
+\setlist[itemize]{before=\RaggedRight,leftmargin=10pt,labelsep=4pt,itemsep=1pt,topsep=1pt,parsep=0pt,
+  label={\color{accent}\textbullet}}
+
+\IfFileExists{personal.tex}{\input{personal.tex}}{%
+  \newcommand{\cvphone}{}\newcommand{\cvaddress}{}}
+
+\begin{document}
+\RaggedRight
+
+% ---------- header ----------
+\begin{minipage}[t]{0.8\textwidth}
+  \vspace{0pt}
+  {\fontsize{24}{28}\selectfont\bfseries Oumayma El Moussaoui}\par\vspace{4pt}
+  {\color{accent}\bfseries Data Scientist | Image \& Measurement Data | Engineering Background}\par\vspace{7pt}
+  {\small
+  \begin{tabular}{@{}l@{\hspace{10pt}}l@{}}
+    \textbf{Phone} {\color{muted}\cvphone} &
+    \textbf{Email} {\color{muted}\href{mailto:oma98yma@gmail.com}{oma98yma@gmail.com}} \\
+    \textbf{Address} {\color{muted}\cvaddress} &
+    \textbf{GitHub} {\color{muted}\href{https://github.com/elmoussaouioumayma}{github.com/elmoussaouioumayma}} \\
+    \textbf{LinkedIn} {\color{muted}\href{https://www.linkedin.com/in/oumayma-el-9aa463375}{linkedin.com/in/oumayma-el-9aa463375}} &
+    \textbf{Portfolio} {\color{muted}\href{https://elmoussaouioumayma.github.io/Portfolio/}{elmoussaouioumayma.github.io/Portfolio}} \\
+  \end{tabular}}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{25mm}
+  \vspace{0pt}
+  \IfFileExists{photo.png}{%
+  \begin{tikzpicture}
+    \begin{scope}
+      \clip (0,0) circle (12.5mm);
+      \node at (0,-2.5mm) {\includegraphics[width=25mm]{photo.png}};
+    \end{scope}
+    \draw[rulec, line width=0.8pt] (0,0) circle (12.5mm);
+  \end{tikzpicture}}{}
+\end{minipage}
+
+\vspace{6pt}
+{\color{accent}\hrule height 1.2pt}
+\vspace{-4.5pt}
+
+% ---------- profile ----------
+\begin{cvsection}{Profile}
+Data scientist with two master's degrees, one in \textbf{Machine Learning \& Data Analytics} (Hochschule Aalen) and one in \textbf{Energy Engineering}, and industrial experience in cement, mining and manufacturing plants. I turn raw image and measurement data into reliable numbers that engineers can act on. I work in Python, validate my results carefully, and am used to working with chemists, materials scientists and process engineers.
+\end{cvsection}
+
+% ---------- skills ----------
+\begin{cvsection}{Skills}
+\begin{tabularx}{\linewidth}[t]{@{}>{\bfseries}p{33mm}>{\RaggedRight\arraybackslash}X@{}}
+Programming & Python (pandas, NumPy, SciPy), SQL, R, Git/GitHub, Jupyter \\
+Image processing & OpenCV, scikit-image: segmentation, morphological filtering, skeletonization, graph extraction, geometric measurement \\
+Machine learning & scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers); cross-validation, leakage checks, threshold tuning \\
+Data \& visualisation & Power BI, matplotlib, interactive tools (Gradio, matplotlib widgets), technical reporting \\
+Engineering & energy audits, thermal analysis, COMSOL, PVsyst, AutoCAD, SolidWorks; ontologies (Protégé/OWL) \\
+\end{tabularx}
+\end{cvsection}
+
+% ---------- experience ----------
+\begin{cvsection}{Experience}
+\entry{Academic Employee (Wissenschaftliche Mitarbeiterin)}{Feb 2026 - present}
+\subentry{Student Research Assistant}{Nov 2024 - Jan 2026}
+\where{Zentrum Elektrochemische Oberflächentechnik (ZEO), Hochschule Aalen}
+\begin{itemize}
+  \item Develop image-analysis software (Python, OpenCV, scikit-image) that automatically detects, classifies and measures cracks in microscope images of chromium coatings.
+  \item Build interactive tools that researchers can use themselves: live parameter tuning, batch processing with CSV export, depth and width profiles along cracks.
+  \item Analyse process and measurement data from chromium electroplating experiments and present the results to chemists and engineers.
+  \item Model electroplating process knowledge as an ontology (Protégé/OWL) so that experimental data can be structured and reused.
+\end{itemize}
+\gap
+\entry{Engineering Intern: Energy Efficiency}{Sep - Nov 2021}
+\where{Excellence Hub, El Jadida, Morocco}
+\begin{itemize}
+  \item Carried out an energy audit of an industrial plant (MAZAFIL): collected and analysed consumption data, quantified the energy losses and proposed savings measures.
+\end{itemize}
+\gap
+\entry{Engineering Intern: Thermal Processes}{Apr - Jun 2019}
+\where{LafargeHolcim, Meknes, Morocco}
+\begin{itemize}
+  \item Analysed the thermal losses of a cement kiln and evaluated insulation options to reduce them.
+\end{itemize}
+\gap
+\entry{Technical Intern: Process Performance}{Apr - May 2018}
+\where{OCP Group, Khouribga, Morocco}
+\begin{itemize}
+  \item Monitored the operation of an industrial grinder and proposed cost-effective measures to improve its performance.
+\end{itemize}
+\end{cvsection}
+
+% ---------- projects ----------
+\begin{cvsection}{Projects}
+\textbf{Master's Thesis: Optimized Image Processing for Quantitative Crack Analysis in Chromium Layers}\par
+\where{Hochschule Aalen, 2026}
+\begin{itemize}
+  \item Automated Python pipeline that turns microscope images of hard-chromium coatings into crack measurements, replacing manual annotation (2 to 2.5 hours per image): segmentation (5 classical methods compared, top-hat and Otsu selected), vectorization into a crack graph, then crack length, density and junction angles in µm.
+  \item Validated against manual ground truth: chamfer distance under 1.77 px (approx. 0.08 µm) on 7 of 8 images. Crack density on 20 images (564 +/- 70 cracks/cm) lies within the published range for hard chromium.
+\end{itemize}
+\gap
+\textbf{Crack Depth Explorer: 3D Crack Measurement from Four Photos}\par
+\begin{itemize}
+  \item Measures cracks in 3D (depth, width and length in mm) from four photos taken with a fixed camera and moving light: photometric stereo reconstructs the surface, then every crack is detected and measured. For concrete, stone, plaster and asphalt; runs live in the browser.
+  \item On 20 test scenes with known depth: 0.21 mm mean depth error, 2.6 times more accurate than single-photo methods, detection precision / recall 0.96 / 0.97.
+\end{itemize}
+\gap
+\textbf{Crack Network Graph: From Crack Images to Measured Graphs}\par
+\begin{itemize}
+  \item Turns a photo of a cracked surface into a measured graph (pixels to vectors): crack lengths, widths and directions, T / Y / X junctions and the closed cells between cracks; the junction types show how the network formed. Exports GeoJSON and GraphML; runs live in the browser.
+  \item On 30 images with a known network: 90\% of junction types correct, formation type recognised in 30 of 30 images.
+\end{itemize}
+\gap
+\textbf{Coating Layer Analysis}\par
+\begin{itemize}
+  \item Detects the layers of a coating in cross-section images from changes in particle size and density, traces the wavy boundaries and measures the thickness of each layer. The number of layers is chosen with a statistical model (BIC). On 100 test images with known layers: 95\% correct number of layers, median boundary error 0.66 µm. Includes a web app and a batch tool.
+\end{itemize}
+\gap
+\textbf{Dark Pattern Detection in User Interfaces}\par
+\begin{itemize}
+  \item Classifier for manipulative website texts. Cross-validation grouped by website prevents leakage between training and test data (test F1 97.3\%). Gradio app that also reads screenshots via OCR.
+\end{itemize}
+\gap
+\textbf{Fake vs.\ Real News Detection (NLP)}\par
+\begin{itemize}
+  \item Found and removed data leakage (5,498 duplicates and source markers that revealed the label), then built a TF-IDF and Logistic Regression model with 97.1\% test accuracy and tested it on newly scraped articles.
+\end{itemize}
+\gap
+\textbf{Diabetes Prediction}\par
+\begin{itemize}
+  \item Compared 6 models in leak-free pipelines (CV AUC 0.84) and tuned the decision threshold for screening, reaching 85\% recall on the test set.
+\end{itemize}
+\end{cvsection}
+
+% ---------- education ----------
+\begin{cvsection}{Education}
+\entry{M.Sc. Machine Learning and Data Analytics}{2024 - 2026}
+\where{Hochschule Aalen, Germany}\gap
+\entry{Intensive German Language Course: telc Deutsch B2}{2022 - 2024}
+\where{Preparation for master's studies in Germany}\gap
+\entry{Doctoral Studies in Energy Engineering (1 year of research, not continued)}{2021 - 2022}
+\where{ENSIAS, Rabat, Morocco. Research on radiative sky cooling with emissive materials}\gap
+\entry{Master's in Energy and Environmental Sciences}{2019 - 2021}
+\where{ENSAM, Rabat, Morocco. Thesis: fabrication and characterisation of emissive materials and testing of a night-time radiative cooling test bench}\gap
+\entry{Bachelor's in Physical Energy Technologies}{2018 - 2019}
+\where{ENS, Rabat, Morocco}\gap
+\entry{Technician Diploma in Energy Technologies}{2016 - 2018}
+\where{Errachidia, Morocco}
+\end{cvsection}
+
+% ---------- certificates ----------
+\begin{cvsection}{Certificates}
+Data Engineer: DataCamp (2023); Data Analyst: Google (2022); First Aid: Red Crescent (2023)
+\end{cvsection}
+
+% ---------- languages ----------
+\begin{cvsection}{Languages}
+\textbf{Arabic} native \hspace{14pt} \textbf{French} fluent \hspace{14pt} \textbf{English} fluent \hspace{14pt} \textbf{German} B2 (telc certificate)
+\end{cvsection}
+
+% ---------- volunteering ----------
+\begin{cvsection}{Volunteering}
+Finance manager of a cultural and social committee (2021); ALBASMA medical and humanitarian caravan (2020)
+\end{cvsection}
+
+\end{document}
