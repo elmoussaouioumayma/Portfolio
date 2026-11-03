@@ -5,6 +5,8 @@
 \documentclass[10pt,a4paper]{article}
 
 \usepackage[a4paper,top=12mm,bottom=11mm,left=15mm,right=15mm]{geometry}
+\input{glyphtounicode}\pdfgentounicode=1  % correct Unicode text for ATS parsers
+\pdfinterwordspaceon \pdffakespace  % real space characters between words
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[scaled=0.92]{helvet}
@@ -17,6 +19,8 @@
 \usepackage{enumitem}
 \usepackage{ragged2e}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={CV - Oumayma El Moussaoui},pdfauthor={Oumayma El Moussaoui},
+  pdfsubject={Curriculum Vitae},pdfkeywords={Data Scientist, Machine Learning, Computer Vision, Python}}
 
 \definecolor{accent}{HTML}{2457B3}
 \definecolor{muted}{HTML}{5B6470}
@@ -47,6 +51,8 @@
 \newcommand{\subentry}[2]{#1\hfill{\color{muted}\small #2}\par}
 \newcommand{\where}[1]{{\color{muted}\small #1}\par}
 \newcommand{\gap}{\par\vspace{5pt}}
+% Skill line: label and description on the same text line (keeps them together for parsers)
+\newcommand{\skill}[2]{\par\hangindent=10pt\hangafter=1\noindent\textbf{#1:} #2\par\vspace{1.5pt}}
 
 \setlist[itemize]{before=\RaggedRight,leftmargin=10pt,labelsep=4pt,itemsep=1pt,topsep=1pt,parsep=0pt,
   label={\color{accent}\textbullet}}
@@ -96,13 +102,11 @@ Data scientist with two master's degrees, one in \textbf{Machine Learning \& Dat
 
 % ---------- skills ----------
 \begin{cvsection}{Skills}
-\begin{tabularx}{\linewidth}[t]{@{}>{\bfseries}p{33mm}>{\RaggedRight\arraybackslash}X@{}}
-Programming & Python (pandas, NumPy, SciPy), SQL, R, Git/GitHub, Jupyter \\
-Image processing & OpenCV, scikit-image: segmentation, morphological filtering, skeletonization, graph extraction, geometric measurement \\
-Machine learning & scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers); cross-validation, leakage checks, threshold tuning \\
-Data \& visualisation & Power BI, matplotlib, interactive tools (Gradio, matplotlib widgets), technical reporting \\
-Engineering & energy audits, thermal analysis, COMSOL, PVsyst, AutoCAD, SolidWorks; ontologies (Protégé/OWL) \\
-\end{tabularx}
+\skill{Programming}{Python (pandas, NumPy, SciPy), SQL, R, Git/GitHub, Jupyter}
+\skill{Image processing}{OpenCV, scikit-image: segmentation, morphological filtering, skeletonization, graph extraction, geometric measurement}
+\skill{Machine learning}{scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers); cross-validation, leakage checks, threshold tuning}
+\skill{Data \& visualisation}{Power BI, matplotlib, interactive tools (Gradio, matplotlib widgets), technical reporting}
+\skill{Engineering}{energy audits, thermal analysis, COMSOL, PVsyst, AutoCAD, SolidWorks; ontologies (Protégé/OWL)}
 \end{cvsection}
 
 % ---------- experience ----------
