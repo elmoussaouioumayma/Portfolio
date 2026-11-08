@@ -82,7 +82,7 @@
       <div class="wrap skills">
         <div class="skill">
           <h3>Programming</h3>
-          <p>Python (pandas, NumPy, SciPy), SQL, R, Git/GitHub, Jupyter</p>
+          <p>Python (pandas, NumPy, SciPy), SQL, R, Git/GitHub, Jupyter, FastAPI, Docker, pytest</p>
         </div>
         <div class="skill">
           <h3>Image processing</h3>
@@ -90,7 +90,7 @@
         </div>
         <div class="skill">
           <h3>Machine learning</h3>
-          <p>scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers); cross-validation, leakage checks, threshold tuning</p>
+          <p>scikit-learn, XGBoost, NLP (TF-IDF, Hugging Face Transformers), retrieval-augmented generation (RAG); cross-validation, leakage checks, threshold tuning</p>
         </div>
         <div class="skill">
           <h3>Data &amp; visualisation</h3>
@@ -157,6 +157,14 @@
             <p>Detects the layers of a coating in cross-section images from changes in particle size and density, traces the wavy boundaries and measures each layer's thickness. The number of layers is chosen with a statistical model (BIC). Includes a web app and a batch tool.</p>
             <p class="metric"><strong>95%</strong> correct layer count · <strong>0.66 µm</strong> median boundary error <span>(100 test images)</span></p>
             <p class="repo-private">Code available on request</p>
+          </article>
+
+          <article class="card">
+            <p class="tag">LLM · RAG · MLOps</p>
+            <h3>Medicine Leaflet Assistant</h3>
+            <p>Answers questions about medicines only from their official package leaflets and cites the leaflet section it used. Refuses emergencies and personal medical advice, says "not found" instead of guessing, and never mixes two medicines in one answer. Served with FastAPI and Gradio, monitored with Prometheus, packaged with Docker.</p>
+            <p class="metric"><strong>45</strong> automated tests · CI with an <strong>evaluation gate</strong> <span>(retrieval, citations, guardrails)</span></p>
+            <a class="repo" href="https://github.com/elmoussaouioumayma/leaflet-rag" target="_blank" rel="noopener">leaflet-rag ↗</a>
           </article>
 
           <article class="card">
