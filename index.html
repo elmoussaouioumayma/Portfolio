@@ -151,20 +151,23 @@
             </div>
           </article>
 
+          <article class="card card-live">
+            <p class="tag"><span class="live-dot" aria-hidden="true"></span>Live project · LLM · RAG</p>
+            <h3>Medicine Leaflet Assistant</h3>
+            <p>Answers questions about medicines only from their official package leaflets and cites the leaflet section it used. Refuses emergencies and personal medical advice, says "not found" instead of guessing, and never mixes two medicines in one answer. Served with FastAPI and Gradio, monitored with Prometheus, packaged with Docker.</p>
+            <p class="metric"><strong>18 / 18</strong> guardrail cases refused correctly · <strong>50</strong> automated tests <span>(+ CI evaluation gate)</span></p>
+            <div class="live-row">
+              <a class="btn btn-primary btn-sm" href="projects/leaflet-assistant/">Open live demo →</a>
+              <a class="repo" href="https://github.com/elmoussaouioumayma/leaflet-rag" target="_blank" rel="noopener">leaflet-rag ↗</a>
+            </div>
+          </article>
+
           <article class="card">
             <p class="tag">Image analysis</p>
             <h3>Coating Layer Analysis</h3>
             <p>Detects the layers of a coating in cross-section images from changes in particle size and density, traces the wavy boundaries and measures each layer's thickness. The number of layers is chosen with a statistical model (BIC). Includes a web app and a batch tool.</p>
             <p class="metric"><strong>95%</strong> correct layer count · <strong>0.66 µm</strong> median boundary error <span>(100 test images)</span></p>
             <p class="repo-private">Code available on request</p>
-          </article>
-
-          <article class="card">
-            <p class="tag">LLM · RAG · MLOps</p>
-            <h3>Medicine Leaflet Assistant</h3>
-            <p>Answers questions about medicines only from their official package leaflets and cites the leaflet section it used. Refuses emergencies and personal medical advice, says "not found" instead of guessing, and never mixes two medicines in one answer. Served with FastAPI and Gradio, monitored with Prometheus, packaged with Docker.</p>
-            <p class="metric"><strong>45</strong> automated tests · CI with an <strong>evaluation gate</strong> <span>(retrieval, citations, guardrails)</span></p>
-            <a class="repo" href="https://github.com/elmoussaouioumayma/leaflet-rag" target="_blank" rel="noopener">leaflet-rag ↗</a>
           </article>
 
           <article class="card">

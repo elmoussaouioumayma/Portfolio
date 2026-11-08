@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medicine Leaflet Assistant · Oumayma El Moussaoui</title>
+  <meta name="description" content="Live demo: a retrieval-augmented assistant that answers questions about medicines only from their package leaflets, cites the section it used and refuses emergencies and personal medical advice. Runs in your browser.">
+  <meta property="og:title" content="Medicine Leaflet Assistant: RAG with citations and guardrails">
+  <meta property="og:description" content="Ask a question, see the guardrails, the retrieved leaflet sections and the cited answer. Runs in your browser.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5f5c'/%3E%3Crect x='7' y='12' width='18' height='8' rx='4' fill='none' stroke='%23f4efe6' stroke-width='2.2'/%3E%3Cpath d='M16 12v8' stroke='%23f4efe6' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link rel="stylesheet" href="../crack-depth-explorer/app.css">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="../../" aria-label="Back to portfolio">
+        <span class="brand-mark" aria-hidden="true">OE</span>
+        <span>Oumayma El Moussaoui</span>
+      </a>
+      <nav aria-label="Page">
+        <ul class="nav-links">
+          <li><a href="#live">Live demo</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#testing">Testing</a></li>
+          <li><a href="https://github.com/elmoussaouioumayma/leaflet-rag" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="../../#projects">← All projects</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="pj-hero">
+      <div class="wrap">
+        <p class="eyebrow">Project · LLM · Retrieval-augmented generation</p>
+        <h1>Medicine Leaflet Assistant</h1>
+        <p class="lede">Ask what a medicine's <strong>package leaflet</strong> says. The assistant answers <strong>only from the leaflet text</strong>, cites the section it used, says "not found" instead of guessing, never mixes two medicines, and <strong>refuses emergencies and personal medical advice</strong>.</p>
+        <dl class="stats pj-stats">
+          <div><dt>Guardrail test cases</dt><dd>18 <span>/ 18 correct</span></dd></div>
+          <div><dt>Browser vs. Python</dt><dd>110 <span>/ 110 identical answers</span></dd></div>
+          <div><dt>Automated tests</dt><dd>50 <span>+ CI evaluation gate</span></dd></div>
+        </dl>
+        <div class="cta pj-cta">
+          <a class="btn btn-primary" href="#live">Try it live</a>
+          <a class="btn btn-ghost" href="https://github.com/elmoussaouioumayma/leaflet-rag" target="_blank" rel="noopener">Code on GitHub ↗</a>
+        </div>
+        <ul class="chips"><li>Python</li><li>RAG</li><li>TF-IDF retrieval</li><li>OpenAI-compatible LLMs</li><li>FastAPI</li><li>Gradio</li><li>Prometheus</li><li>Docker</li><li>pytest</li></ul>
+      </div>
+    </section>
+
+    <section class="section pj-live" id="live">
+      <div class="wrap">
+        <p class="kicker">Live demo</p>
+        <h2>Ask the leaflets</h2>
+        <p class="pj-intro">The demo uses <strong>three fictional medicines</strong> (Fictamol, Testoprazole, Sampleastine) from the project's test set, so nothing here is real medical information. It runs the retrieval and guardrails <strong>in your browser</strong> in extractive mode: the answer is the leaflet's own sentences, with no LLM. Nothing you type is sent anywhere.</p>
+
+        <div class="la-grid">
+          <div class="pj-viewer la-chat">
+            <div class="la-log" id="log" role="log" aria-live="polite" aria-label="Conversation">
+              <div class="la-msg la-bot la-hello">
+                <p>Hello! Ask me what a leaflet says about <strong>side effects, dose, storage, ingredients</strong> or <strong>warnings</strong>. Try a question below, or one that I should refuse.</p>
+              </div>
+            </div>
+            <form class="la-form" id="form" autocomplete="off">
+              <label class="sr-only" for="q">Your question</label>
+              <input id="q" type="text" maxlength="300" placeholder="What are the side effects of Fictamol?" required>
+              <button class="btn btn-primary btn-sm" type="submit">Ask</button>
+            </form>
+            <div class="la-examples" id="examples" aria-label="Example questions"></div>
+          </div>
+
+          <aside class="pj-side la-side">
+            <div>
+              <h3 class="la-h">Behind the last answer</h3>
+              <ol class="la-trace" id="trace">
+                <li class="la-step" data-step="guard"><span class="la-dot"></span><div><b>Guardrails</b><small>emergency and personal-advice rules</small></div></li>
+                <li class="la-step" data-step="med"><span class="la-dot"></span><div><b>Medicine check</b><small>is the medicine covered?</small></div></li>
+                <li class="la-step" data-step="ret"><span class="la-dot"></span><div><b>Retrieval</b><small>top 4 leaflet sections, score ≥ 0.12</small></div></li>
+                <li class="la-step" data-step="ans"><span class="la-dot"></span><div><b>Answer</b><small>leaflet sentences with [n] citations</small></div></li>
+              </ol>
+            </div>
+            <div>
+              <h3 class="la-h">Retrieved sections <small id="lat"></small></h3>
+              <div id="hits" class="la-hits"><p class="pj-hint">Ask a question to see which leaflet sections were retrieved and how they scored.</p></div>
+            </div>
+          </aside>
+        </div>
+
+        <details class="pj-card la-leaflets" id="leaflets">
+          <summary>Read the three fictional leaflets</summary>
+          <div class="la-leaflet-grid" id="leafletGrid"></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="section alt" id="how">
+      <div class="wrap">
+        <p class="kicker">How it works</p>
+        <h2>Safety checks first, then retrieval, then a cited answer</h2>
+        <p class="pj-intro">EU package leaflets all follow the same template with six numbered sections. The leaflets are split along those sections, so every passage stays on one topic and every answer can say where it came from: "section 4, Possible side effects".</p>
+        <ol class="pj-steps">
+          <li><span>Guardrails</span>Transparent, tested rules run before anything else. Overdoses, poisoning, breathing problems and self-harm get an emergency message (112). "Should I…" and "is it safe for me…" questions are sent to a pharmacist or doctor.</li>
+          <li><span>Medicine check</span>The question must name a medicine that is covered. "Side effects of aspirin" is never answered from another medicine's leaflet.</li>
+          <li><span>Retrieval</span>TF-IDF on word and character n-grams with light stemming. Patient words for each section ("store", "dose", "side effects") are added to the index, so "how should X be stored" finds section 5.</li>
+          <li><span>Abstention</span>If the best score is below 0.12, the answer is "not found", not a guess. Passages from other medicines are dropped.</li>
+          <li><span>Answer</span>The full project sends the passages to any OpenAI-compatible LLM (OpenAI, Azure, local Ollama) with mandatory [n] citations, and falls back to the extractive answer shown here if the LLM fails.</li>
+          <li><span>Serving</span>FastAPI with <code>/ask</code>, <code>/health</code> and <code>/metrics</code>, a Gradio UI and Docker. Prometheus tracks requests by outcome, latency and retrieval scores. Logs store only a hash of the question, never the text.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="testing">
+      <div class="wrap">
+        <p class="kicker">Testing</p>
+        <h2>Measured, not assumed</h2>
+        <div class="pj-table-wrap">
+          <table class="pj-table">
+            <thead><tr><th>Check</th><th>Result</th><th>What it shows</th></tr></thead>
+            <tbody>
+              <tr><th>Guardrail questions (10 emergency, 8 personal advice)</th><td><strong>18 / 18</strong></td><td>refused correctly, with no false refusals on normal questions</td></tr>
+              <tr><th>Test-set questions (6 answerable, 2 off-topic)</th><td><strong>8 / 8</strong></td><td>right leaflet and section retrieved, expected facts present, off-topic answered with "not found"</td></tr>
+              <tr><th>This page vs. the Python package</th><td><strong>110 / 110</strong></td><td>identical status, answer text and citations, on the test questions plus 72 paraphrases</td></tr>
+              <tr><th>Automated tests (pytest)</th><td><strong>50 passed</strong></td><td>ingestion, retrieval, guardrails, pipeline, API, LLM fallback; CI fails if guardrail accuracy drops below 100 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pj-two">
+          <div>
+            <h3>Limitations</h3>
+            <ul>
+              <li>The test leaflets are fictional and short, so these numbers check that the pipeline works. They do not measure quality on real leaflets.</li>
+              <li>Extractive answers are leaflet sentences, not a written summary. Some questions get a nearby but not exact sentence. The sources panel shows why.</li>
+              <li>The guardrails are keyword rules: transparent and tested, but they will miss some paraphrases. A production system would add a trained classifier and human review.</li>
+              <li>English leaflets only.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Not medical advice</h3>
+            <p>This is a portfolio project, not a medical device. The leaflets in this demo are fictional and written only for testing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap">© <span id="year">2026</span> Oumayma El Moussaoui · <a href="../../">Portfolio</a></div>
+  </footer>
+  <script src="../../assets/main.js"></script>
+  <script src="rag.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
