@@ -20,4 +20,4 @@ Then open http://localhost:8000.
 ## Publish with GitHub Pages
 
 Repository **Settings → Pages → Build and deployment**: Source "Deploy from a branch", branch `main`, folder `/ (root)`.
-The site will be served at `https://elmoussaouioumayma.github.io/Portfolio/`.
+The site will be served at `https://elmoussaouioumayma.github.io/Portfolio/`. 
