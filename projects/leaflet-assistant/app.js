@@ -39,7 +39,7 @@
       answered: "Answer from the leaflet",
       refused_emergency: "Emergency: refused",
       refused_personal_advice: "Personal advice: refused",
-      not_found: res.reason === "no_medicine" ? "Medicine not covered" : "Not found",
+      not_found: res.reason === "no_medicine" ? "Which medicine?" : "Not found",
     }[res.status];
     let text = esc(res.answer).replace(/\[(\d+)\]/g, (_, n) => `<button type="button" class="la-cite" data-turn="${id}" data-n="${n}" aria-label="Source ${n}">${n}</button>`);
     let html = `<span class="la-badge">${badge}</span><p>${text}</p>`;
@@ -51,14 +51,46 @@
     return html;
   }
 
-  function ask(question) {
-    question = question.trim();
-    if (question.length < 3) return;
-    const res = assistant.ask(question);
+  // Chat layer (the engine itself is stateless, like the Python API): a reply that is only a
+  // medicine name continues the previous question that named no medicine; otherwise it is read
+  // as "What is X used for?". The bubble shows how the message was read.
+  let pending = null;
+  const capName = (n) => n.charAt(0).toUpperCase() + n.slice(1);
+
+  function onlyMedicine(text) {
+    const toks = (text.toLowerCase().match(/[a-z0-9]+/g) || []).filter((t) => !assistant.stop.has(t));
+    return toks.length === 1 && assistant.covered.includes(toks[0]) ? toks[0] : null;
+  }
+
+  function interpret(typed) {
+    const name = onlyMedicine(typed);
+    if (!name) return [typed, assistant.ask(typed)];
+    const tries = [];
+    if (pending) tries.push(`${pending.replace(/[?.!\s]+$/, "")} of ${capName(name)}?`);
+    tries.push(`What is ${capName(name)} used for?`);
+    let res;
+    for (const q of tries) {
+      res = assistant.ask(q);
+      if (res.status === "answered") return [q, res];
+    }
+    return [tries[tries.length - 1], res];
+  }
+
+  function ask(typed) {
+    typed = typed.trim();
+    if (typed.length < 3) return;
+    const [question, res] = interpret(typed);
+    pending = res.reason === "no_medicine" ? question : null;
     const id = ++turn;
-    addMsg("la-user", `<p>${esc(question)}</p>`);
+    addMsg("la-user", `<p>${esc(typed)}</p>`);
     const cls = res.status === "answered" ? "" : res.status.startsWith("refused") ? " refused" : " notfound";
-    addMsg("la-bot" + cls, botHtml(res, id));
+    let html = botHtml(res, id);
+    if (question !== typed) html = `<p class="la-read">Read as: “${esc(question)}”</p>` + html;
+    if (res.status === "not_found" && res.reason !== "no_medicine") {
+      html += `<p class="la-tip">Try asking about side effects, dose, storage, ingredients, warnings or what it is used for.</p>`;
+    }
+    const msg = addMsg("la-bot" + cls, html);
+    msg.dataset.q = question;
     renderTrace(res);
     renderHits(res, id);
     lat.textContent = `· ${res.latency_ms < 1 ? "< 1" : res.latency_ms.toFixed(0)} ms in your browser`;
@@ -125,7 +157,7 @@
     const b = e.target.closest(".la-cite");
     if (!b) return;
     if (+b.dataset.turn !== turn) { // older answer: re-run it so the panel shows its sources
-      const q = b.closest(".la-msg").previousElementSibling.textContent;
+      const q = b.closest(".la-msg").dataset.q;
       const res = assistant.ask(q);
       renderTrace(res);
       renderHits(res, +b.dataset.turn);

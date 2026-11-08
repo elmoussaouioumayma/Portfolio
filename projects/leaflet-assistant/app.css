@@ -79,3 +79,5 @@
 .la-leaflet dl { margin: 0; font-size: .8rem; }
 .la-leaflet dt { font: 500 .7rem var(--mono); color: var(--accent); margin-top: 8px; }
 .la-leaflet dd { margin: 2px 0 0; color: var(--ink-soft); line-height: 1.45; }
+.la-read { font: .72rem var(--mono); color: var(--muted); margin-bottom: 6px !important; }
+.la-tip { margin-top: 6px !important; font-size: .8rem; color: var(--ink-soft); }
