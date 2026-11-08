@@ -9,10 +9,11 @@
 
 /* chat */
 .la-chat { display: flex; flex-direction: column; gap: 12px; }
-.la-log { display: flex; flex-direction: column; gap: 12px; height: 460px; overflow-y: auto; padding: 4px 4px 8px; scroll-behavior: smooth; }
-@media (max-width: 600px) { .la-log { height: 420px; } }
+.la-log { display: flex; flex-direction: column; gap: 12px; min-height: 160px; max-height: 460px; overflow-y: auto; padding: 4px 4px 8px; scroll-behavior: smooth; }
+@media (max-width: 600px) { .la-log { max-height: 420px; } }
 .la-msg { max-width: 88%; padding: 11px 14px; border-radius: 14px; font-size: .93rem; line-height: 1.5; overflow-wrap: anywhere; }
 .la-msg p { margin: 0; }
+.la-msg p + p { margin-top: 6px; }
 .la-user { align-self: flex-end; background: var(--accent); color: var(--accent-ink); border-bottom-right-radius: 4px; }
 .la-bot { align-self: flex-start; background: var(--bg); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
 .la-bot.refused { border-color: color-mix(in srgb, var(--la-stop) 55%, var(--line)); background: color-mix(in srgb, var(--la-stop) 7%, var(--bg)); }
